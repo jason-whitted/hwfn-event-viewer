@@ -1,12 +1,12 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { Cities } from './Cities';
+import { Search } from './Search';
 
 export default (
   <Switch>
-    <Route exact path="/" render={() => 'Coming soon...'} />
-    <Route exact path="/cities" component={Cities} />
+    <Route exact path="/" component={Search} />
+    <Route exact path="/search" component={Search} />
     <Route render={() => '404 - Not Found'} />
   </Switch>
 );
