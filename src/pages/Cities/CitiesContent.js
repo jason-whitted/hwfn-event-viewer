@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 
+import { apiProvider } from 'common';
+
 class CitiesContent extends Component {
   state = { cities: undefined };
 
   componentWillMount() {
-    fetch('/api/cities', {
+    const request = {
+      url: '/api/cities',
       method: 'POST',
-    })
-      .then(r => r.json())
-      .then(cities => {
-        this.setState({ cities });
-      });
+      data: { test: 'abc - easy as 1 2 3' },
+    };
+
+    const success = cities => {
+      this.setState({ cities });
+    };
+
+    const failure = error => {
+      console.error('CitiesContent', error);
+    };
+
+    return apiProvider(request).then(success).catch(failure);
   }
 
   render() {
