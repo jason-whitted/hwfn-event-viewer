@@ -6,7 +6,7 @@ const eventTypes = {
   5: 'Notification',
 };
 
-const applications {
+const applications = {
   1: 'Portal (Production)',
   2: 'ORCC (Production)',
   3: 'Lending Web Service (Production)',
