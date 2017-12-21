@@ -7,12 +7,45 @@ import { Module } from 'common';
 import connectConfig from './connect';
 
 class EventList extends Component {
-  componentWillMount = () => {
-    this.props.getMeta();
+  merge = () => {
+    const { events, meta } = this.props;
+
+    if (!events) {
+      return events;
+    }
+
+    let refresh = !meta;
+
+    const swap = (obj = {}) => Object.keys(obj).reduce((o, k) => ({ ...o, [obj[k]]: k }), {});
+    const applications = swap((meta || {}).applications);
+    const eventTypes = swap((meta || {}).eventTypes);
+
+    const getter = kvp => id => {
+      const res = kvp[id];
+      refresh |= !res;
+      return res || id;
+    };
+    const getType = getter(eventTypes);
+    const getApp = getter(applications);
+
+    const map = event => ({
+      ...event,
+      type: getType(event.typeId),
+      app: getApp(event.appId),
+    });
+
+    const result = events.map(map);
+
+    if (refresh) {
+      this.props.getMeta({ force: true });
+    }
+
+    return result;
   };
 
   render = () => {
-    const { events, meta } = this.props;
+    const { meta } = this.props;
+    const events = this.merge();
 
     return (
       <Module>
