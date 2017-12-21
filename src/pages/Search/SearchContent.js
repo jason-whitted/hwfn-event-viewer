@@ -5,12 +5,16 @@ import { EventList } from 'components/EventList';
 import { EventView } from 'components/EventView';
 
 class SearchContent extends Component {
+  search = criteria => {
+    console.log('SearchContent', 'search', { criteria });
+  };
+
   render = () => {
     return (
       <div>
         <div className="row">
           <div className="col-xs-12 col-md-4">
-            <Search />
+            <Search search={this.search} />
           </div>
           <div className="col-xs-12 col-md-8">
             <EventList />
