@@ -3,7 +3,7 @@ import React from 'react';
 const App = () => (
   <div className="container">
     <header>
-      <h1>Event Viewer</h1>
+      <h1>Ent Event Viewer</h1>
     </header>
   </div>
 );
