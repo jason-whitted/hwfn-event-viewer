@@ -3,14 +3,13 @@ const faker = require('faker');
 const event = () => ({
   id: faker.random.number(),
   date: faker.date.past().toISOString(),
-  type: faker.random.number(),
+  typeId: faker.random.number(),
   appId: faker.random.number(),
   desc: faker.lorem.text(),
   info: faker.hacker.phrase(),
   user: faker.internet.userName(),
   ip: faker.internet.ip(),
   version: '1.0.0.0',
-  eventId: faker.random.number(),
 });
 
 module.exports = router =>

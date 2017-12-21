@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const router = express.Router();
 
+require('./meta')(router);
 require('./search')(router);
 
 app.use(router);
