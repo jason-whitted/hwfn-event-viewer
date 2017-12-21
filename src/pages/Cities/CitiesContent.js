@@ -4,7 +4,9 @@ class CitiesContent extends Component {
   state = { cities: undefined };
 
   componentWillMount() {
-    fetch('/api/cities')
+    fetch('/api/cities', {
+      method: 'POST',
+    })
       .then(r => r.json())
       .then(cities => {
         this.setState({ cities });
