@@ -6,14 +6,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const router = express.Router();
-router.get('/api/cities', (req, res) => {
-  const cities = [
-    { name: 'New York City', population: 8175133 },
-    { name: 'Los Angeles', population: 3792621 },
-    { name: 'Chicago', population: 2695598 },
-  ];
-  res.json(cities);
-});
+
+require('./search')(router);
+
 app.use(router);
 
 app.set('port', process.env.PORT || 3001);
