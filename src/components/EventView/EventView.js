@@ -1,5 +1,16 @@
 import React from 'react';
 
-const EventView = () => <div>EventView</div>;
+import { Module } from 'common';
+
+const EventView = () => (
+  <Module>
+    <Module.Head>
+      EventView
+    </Module.Head>
+    <Module.Body>
+      Coming soon...
+    </Module.Body>
+  </Module>
+);
 
 export default EventView;

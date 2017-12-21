@@ -8,9 +8,17 @@ class SearchContent extends Component {
   render = () => {
     return (
       <div>
-        <Search />
-        <EventList />
-        <EventView />
+        <div className="row">
+          <div className="col-xs-12 col-md-4">
+            <Search />
+          </div>
+          <div className="col-xs-12 col-md-8">
+            <EventList />
+          </div>
+        </div>
+        <div className="col-xs-12">
+          <EventView />
+        </div>
       </div>
     );
   };

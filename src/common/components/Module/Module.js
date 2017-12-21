@@ -6,8 +6,10 @@ import ModuleHead from './ModuleHead';
 import ModuleBody from './ModuleBody';
 import ModuleFoot from './ModuleFoot';
 
+import './styles.css';
+
 const Module = ({ className, children }) => (
-  <div className={classNames('card', classNames)}>
+  <div className={classNames('Module card', classNames)}>
     {children}
   </div>
 );
