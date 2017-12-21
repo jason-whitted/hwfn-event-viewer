@@ -1,5 +1,16 @@
 import React from 'react';
 
-const Search = () => <div>Search</div>;
+import { Module } from 'common';
+
+const Search = () => (
+  <Module>
+    <Module.Head>
+      Search
+    </Module.Head>
+    <Module.Body>
+      Coming soon...
+    </Module.Body>
+  </Module>
+);
 
 export default Search;
