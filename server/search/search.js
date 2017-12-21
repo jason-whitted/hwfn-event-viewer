@@ -1,5 +1,5 @@
 module.exports = router =>
-  router.post('/api/cities', (req, res) => {
+  router.post('/api/search', (req, res) => {
     console.log(req.method, req.path);
     const { test } = req.body;
     const cities = [

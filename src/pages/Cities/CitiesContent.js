@@ -7,7 +7,7 @@ class CitiesContent extends Component {
 
   componentWillMount() {
     const request = {
-      url: '/api/cities',
+      url: '/api/search',
       method: 'POST',
       data: { test: 'abc - easy as 1 2 3' },
     };
