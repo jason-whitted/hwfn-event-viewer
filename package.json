@@ -2,11 +2,17 @@
   "name": "hwfn-event-viewer",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "yolo": "git reset --hard && git clean -fd && git pull --force",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "nodemon server/index.js",
+    "start:client": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
-    "concurrently": "^3.5.1",
-    "express": "^4.16.2",
     "history": "^4.7.2",
-    "nodemon": "^1.14.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
@@ -17,13 +23,10 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1"
   },
-  "scripts": {
-    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "start:server": "nodemon server/index.js",
-    "start:client": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "nodemon": "^1.14.1"
   },
   "proxy": "http://localhost:3001"
 }
