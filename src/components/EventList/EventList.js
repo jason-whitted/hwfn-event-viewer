@@ -9,6 +9,8 @@ import connectConfig from './connect';
 import EventItem from './EventItem';
 
 class EventList extends Component {
+  state = { filter: '' };
+
   merge = () => {
     const { events, meta } = this.props;
 
@@ -46,16 +48,56 @@ class EventList extends Component {
     return result;
   };
 
+  filterChange = event => {
+    const filter = event.target.value;
+    this.setState({ filter });
+  };
+
+  getFilteredEvents = () => {
+    const events = this.merge();
+    if (!events) {
+      return events;
+    }
+
+    const lower = s => `${s || ''}`.toLowerCase();
+
+    const f = lower(this.state.filter);
+    if (!f) {
+      return events;
+    }
+
+    const filter = ({ moment, type, app, desc, info, user, ip }) => {
+      return (
+        lower(moment.format('YYYY-MM-DD LTS')).includes(f)
+        || lower(type).includes(f)
+        || lower(app).includes(f)
+        || lower(desc).includes(f)
+        || lower(info).includes(f)
+        || lower(user).includes(f)
+        || lower(ip).includes(f)
+      );
+    };
+
+    return events.filter(filter);
+  }
+
   render = () => {
     const { meta } = this.props;
-    const events = this.merge();
+    const { filter } = this.state;
+    const events = this.getFilteredEvents();
 
     return (
       <Module>
         <Module.Head>
-          EventList
+          <div className="d-flex justify-content-between">
+            <div>Event List</div>
+            <div>
+              <input type="text" placeholder="Filter" onChange={this.filterChange} value={filter} />
+            </div>
+            <div>Per page goes here</div>
+          </div>
         </Module.Head>
-        <table className="table table-sm table-bordered table-striped">
+        <table className="table table-sm table-bordered table-striped mb-0">
           <thead>
             <tr>
               <th>Date</th>
@@ -73,6 +115,9 @@ class EventList extends Component {
             </tbody>
           )}
         </table>
+        <Module.Foot className="text-center">
+          Paging goes here
+        </Module.Foot>
       </Module>
     );
   };
