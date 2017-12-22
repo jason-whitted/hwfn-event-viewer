@@ -19,8 +19,24 @@ class EventList extends Component {
     pageSize: 10,
   };
 
-  merge = () => {
-    const { events, meta } = this.props;
+  filterChange = event => {
+    const filter = event.target.value;
+    this.setState({ filter });
+
+    // TODO: debounce events
+  };
+
+  pageSizeChange = event => {
+    const pageSize = event.target.value;
+    this.setState({ pageSize });
+  };
+
+  setPage = page => {
+    this.setState({ page });
+  };
+
+  getMergedEvents = events => {
+    const { meta } = this.props;
 
     if (!events) {
       return events;
@@ -54,22 +70,6 @@ class EventList extends Component {
     }
 
     return result;
-  };
-
-  filterChange = event => {
-    const filter = event.target.value;
-    this.setState({ filter });
-
-    // TODO: debounce events
-  };
-
-  pageSizeChange = event => {
-    const pageSize = event.target.value;
-    this.setState({ pageSize });
-  };
-
-  setPage = page => {
-    this.setState({ page });
   };
 
   getFilteredEvents = events => {
@@ -123,12 +123,11 @@ class EventList extends Component {
   };
 
   render = () => {
-    const { meta } = this.props;
+    const { events, meta } = this.props;
     const { filter, page, pageSize } = this.state;
-    const events = this.merge();
-    const filteredAndSortedEvents = compose(this.getSortedEvents, this.getFilteredEvents)(events);
-    const maxPage = maxPages(pageSize)(filteredAndSortedEvents);
-    const paginatedEvents = this.getPaginatedEvents(filteredAndSortedEvents);
+    const composedEvents = compose(this.getSortedEvents, this.getFilteredEvents, this.getMergedEvents)(events);
+    const maxPage = maxPages(pageSize)(composedEvents);
+    const paginatedEvents = this.getPaginatedEvents(composedEvents);
 
     return (
       <Module>
