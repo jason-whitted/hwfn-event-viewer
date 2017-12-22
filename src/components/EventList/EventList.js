@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -7,6 +8,7 @@ import { Module } from 'common';
 
 import connectConfig from './connect';
 import EventItem from './EventItem';
+import PageButtons from './PageButtons';
 
 const maxPages = pageSize => arr => Math.ceil((arr || []).length / pageSize);
 
@@ -66,8 +68,11 @@ class EventList extends Component {
     this.setState({ pageSize });
   };
 
-  getFilteredEvents = () => {
-    const events = this.merge();
+  setPage = page => {
+    this.setState({ page });
+  };
+
+  getFilteredEvents = events => {
     if (!events) {
       return events;
     }
@@ -94,8 +99,7 @@ class EventList extends Component {
     return events.filter(filter);
   };
 
-  getSortedEvents = () => {
-    const events = this.getFilteredEvents();
+  getSortedEvents = events => {
     if (!events) {
       return events;
     }
@@ -105,8 +109,7 @@ class EventList extends Component {
     return events;
   }
 
-  getPaginatedEvents = () => {
-    const events = this.getSortedEvents();
+  getPaginatedEvents = events => {
     if (!events) {
       return events;
     }
@@ -114,14 +117,18 @@ class EventList extends Component {
     const { page, pageSize } = this.state;
     const pages = maxPages(pageSize)(events);
 
-    const start = page * pageSize;
+    const start = Math.max(Math.min(page, pages - 1), 0) * pageSize;
+
     return events.slice(start, start + pageSize);
   };
 
   render = () => {
     const { meta } = this.props;
-    const { filter, pageSize } = this.state;
-    const events = this.getPaginatedEvents();
+    const { filter, page, pageSize } = this.state;
+    const events = this.merge();
+    const filteredAndSortedEvents = compose(this.getSortedEvents, this.getFilteredEvents)(events);
+    const maxPage = maxPages(pageSize)(filteredAndSortedEvents);
+    const paginatedEvents = this.getPaginatedEvents(filteredAndSortedEvents);
 
     return (
       <Module>
@@ -149,16 +156,17 @@ class EventList extends Component {
               <th>IP</th>
             </tr>
           </thead>
-          {events && (
+          {paginatedEvents && (
             <tbody>
-              {events.map(evt => <EventItem key={evt.id} {...evt} />)}
+              {paginatedEvents.map(evt => <EventItem key={evt.id} {...evt} />)}
             </tbody>
           )}
         </table>
-        <Module.Foot className="text-center">
-          {/* TODO: Implement paging buttons */}
-          Paging goes here
-        </Module.Foot>
+        {paginatedEvents && (
+          <Module.Foot className="text-center">
+            <PageButtons page={Math.min(page, maxPage - 1)} maxPage={maxPage} setPage={this.setPage} />
+          </Module.Foot>
+        )}
       </Module>
     );
   };
