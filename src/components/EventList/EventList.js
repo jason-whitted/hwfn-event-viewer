@@ -58,7 +58,12 @@ class EventList extends Component {
     const filter = event.target.value;
     this.setState({ filter });
 
-    // TODO: debounc events
+    // TODO: debounce events
+  };
+
+  pageSizeChange = event => {
+    const pageSize = event.target.value;
+    this.setState({ pageSize });
   };
 
   getFilteredEvents = () => {
@@ -115,21 +120,21 @@ class EventList extends Component {
 
   render = () => {
     const { meta } = this.props;
-    const { filter } = this.state;
+    const { filter, pageSize } = this.state;
     const events = this.getPaginatedEvents();
 
     return (
       <Module>
         <Module.Head>
-          <div className="d-flex justify-content-between">
-            <div>Event List</div>
-            <div>
-              <input type="text" placeholder="Filter" onChange={this.filterChange} value={filter} />
-            </div>
-            <div>
-              {/* TODO: Implement per page drop down */}
-              Per page goes here
-            </div>
+          <div className="form-inline d-flex justify-content-between">
+            <h4 className="mb-0">Events</h4>
+            <input type="text" className="form-control" placeholder="Filter" onChange={this.filterChange} value={filter} />
+            <select className="form-control" onChange={this.pageSizeChange} value={pageSize}>
+              <option value={10}>10 per page</option>
+              <option value={25}>25 per page</option>
+              <option value={50}>50 per page</option>
+              <option value={100}>100 per page</option>
+            </select>
           </div>
         </Module.Head>
         <table className="table table-sm table-bordered table-striped mb-0">
