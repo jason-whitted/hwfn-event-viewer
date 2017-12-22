@@ -57,6 +57,8 @@ class EventList extends Component {
   filterChange = event => {
     const filter = event.target.value;
     this.setState({ filter });
+
+    // TODO: debounc events
   };
 
   getFilteredEvents = () => {
@@ -124,7 +126,10 @@ class EventList extends Component {
             <div>
               <input type="text" placeholder="Filter" onChange={this.filterChange} value={filter} />
             </div>
-            <div>Per page goes here</div>
+            <div>
+              {/* TODO: Implement per page drop down */}
+              Per page goes here
+            </div>
           </div>
         </Module.Head>
         <table className="table table-sm table-bordered table-striped mb-0">
@@ -146,6 +151,7 @@ class EventList extends Component {
           )}
         </table>
         <Module.Foot className="text-center">
+          {/* TODO: Implement paging buttons */}
           Paging goes here
         </Module.Foot>
       </Module>
