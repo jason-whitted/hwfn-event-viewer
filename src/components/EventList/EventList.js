@@ -17,16 +17,16 @@ class EventList extends Component {
     let refresh = !meta;
 
     const swap = (obj = {}) => Object.keys(obj).reduce((o, k) => ({ ...o, [obj[k]]: k }), {});
-    const applications = swap((meta || {}).applications);
-    const eventTypes = swap((meta || {}).eventTypes);
-
-    const getter = kvp => id => {
-      const res = kvp[id];
-      refresh |= !res;
-      return res || id;
+    const getter = prop => {
+      const kvp = swap((meta || {})[prop]);
+      return id => {
+        const res = kvp[id];
+        refresh |= !res;
+        return res || id;
+      };
     };
-    const getType = getter(eventTypes);
-    const getApp = getter(applications);
+    const getType = getter('eventTypes');
+    const getApp = getter('applications');
 
     const map = event => ({
       ...event,
