@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { Module } from 'common';
 
@@ -33,6 +34,7 @@ class EventList extends Component {
       ...event,
       type: getType(event.typeId),
       app: getApp(event.appId),
+      moment: moment(event.date),
     });
 
     const result = events.map(map);

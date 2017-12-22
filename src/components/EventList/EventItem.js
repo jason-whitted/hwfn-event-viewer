@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EventItem = ({ date, type, app, desc, info, user, ip }) => (
+const EventItem = ({ moment, type, app, desc, info, user, ip }) => (
   <tr>
-    <td>{date}</td>
+    <td>
+      <span className="d-inline-block text-nowrap">
+        {moment.format('YYYY-MM-DD')}
+      </span>
+      <span className="d-inline-block text-nowrap">
+        {moment.format('LTS')}
+      </span>
+    </td>
     <td>{type}</td>
     <td>{app}</td>
     <td>{desc}</td>
@@ -14,7 +21,7 @@ const EventItem = ({ date, type, app, desc, info, user, ip }) => (
 );
 
 EventItem.propTypes = {
-  date: PropTypes.string.isRequired,
+  moment: PropTypes.object.isRequired,
   type: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   app: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   desc: PropTypes.string.isRequired,
