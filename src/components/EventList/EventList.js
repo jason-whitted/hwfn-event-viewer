@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Module } from 'common';
 
 import connectConfig from './connect';
+import EventItem from './EventItem';
 
 class EventList extends Component {
   merge = () => {
@@ -52,14 +53,24 @@ class EventList extends Component {
         <Module.Head>
           EventList
         </Module.Head>
-        <Module.Body>
-          <pre>
-            {JSON.stringify(meta, null, 2)}
-          </pre>
-          <pre>
-            {JSON.stringify(events, null, 2)}
-          </pre>
-        </Module.Body>
+        <table className="table table-sm table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Application</th>
+              <th>Description</th>
+              <th>Additional Info</th>
+              <th>Username</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          {events && (
+            <tbody>
+              {events.map(evt => <EventItem key={evt.id} {...evt} />)}
+            </tbody>
+          )}
+        </table>
       </Module>
     );
   };
