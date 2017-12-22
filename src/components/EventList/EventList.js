@@ -8,8 +8,14 @@ import { Module } from 'common';
 import connectConfig from './connect';
 import EventItem from './EventItem';
 
+const maxPages = pageSize => arr => Math.ceil((arr || []).length / pageSize);
+
 class EventList extends Component {
-  state = { filter: '' };
+  state = {
+    filter: '',
+    page: 0,
+    pageSize: 10,
+  };
 
   merge = () => {
     const { events, meta } = this.props;
@@ -79,12 +85,36 @@ class EventList extends Component {
     };
 
     return events.filter(filter);
+  };
+
+  getSortedEvents = () => {
+    const events = this.getFilteredEvents();
+    if (!events) {
+      return events;
+    }
+
+    // TODO: Add some sorting logic
+
+    return events;
   }
+
+  getPaginatedEvents = () => {
+    const events = this.getSortedEvents();
+    if (!events) {
+      return events;
+    }
+
+    const { page, pageSize } = this.state;
+    const pages = maxPages(pageSize)(events);
+
+    const start = page * pageSize;
+    return events.slice(start, start + pageSize);
+  };
 
   render = () => {
     const { meta } = this.props;
     const { filter } = this.state;
-    const events = this.getFilteredEvents();
+    const events = this.getPaginatedEvents();
 
     return (
       <Module>
