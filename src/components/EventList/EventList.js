@@ -10,6 +10,7 @@ import connectConfig from './connect';
 import EventItem from './EventItem';
 import PageButtons from './PageButtons';
 
+const lower = s => `${s || ''}`.toLowerCase();
 const maxPages = pageSize => arr => Math.ceil((arr || []).length / pageSize);
 
 class EventList extends Component {
@@ -17,6 +18,7 @@ class EventList extends Component {
     filter: '',
     page: 0,
     pageSize: 10,
+    sort: 'date',
   };
 
   filterChange = event => {
@@ -33,6 +35,11 @@ class EventList extends Component {
 
   setPage = page => {
     this.setState({ page });
+  };
+
+  sortChange = event => {
+    const sort = event.target.value;
+    this.setState({ sort });
   };
 
   getMergedEvents = events => {
@@ -77,8 +84,6 @@ class EventList extends Component {
       return events;
     }
 
-    const lower = s => `${s || ''}`.toLowerCase();
-
     const f = lower(this.state.filter);
     if (!f) {
       return events;
@@ -104,9 +109,21 @@ class EventList extends Component {
       return events;
     }
 
-    // TODO: Add some sorting logic
+    const sorts = {
+      date: ({ date: a }, { date: b }) => lower(a).localeCompare(lower(b)),
+      type: ({ type: a }, { type: b }) => lower(a).localeCompare(lower(b)),
+      app: ({ app: a }, { app: b }) => lower(a).localeCompare(lower(b)),
+      desc: ({ desc: a }, { desc: b }) => lower(a).localeCompare(lower(b)),
+      info: ({ info: a }, { info: b }) => lower(a).localeCompare(lower(b)),
+      user: ({ user: a }, { user: b }) => lower(a).localeCompare(lower(b)),
+    };
 
-    return events;
+    const sort = sorts[this.state.sort];
+    if (!sort) {
+      return events;
+    }
+
+    return events.sort(sort);
   }
 
   getPaginatedEvents = events => {
@@ -146,13 +163,41 @@ class EventList extends Component {
         <table className="table table-sm table-bordered table-striped mb-0">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Application</th>
-              <th>Description</th>
-              <th>Additional Info</th>
-              <th>Username</th>
-              <th>IP</th>
+              <th>
+                <button type="button" className="btn btn-link" value="date" onClick={this.sortChange}>
+                  Date
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" value="type" onClick={this.sortChange}>
+                  Type
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" value="app" onClick={this.sortChange}>
+                  Application
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" value="desc" onClick={this.sortChange}>
+                  Description
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" value="info" onClick={this.sortChange}>
+                  Additional Info
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" value="user" onClick={this.sortChange}>
+                  Username
+                </button>
+              </th>
+              <th>
+                <button type="button" className="btn btn-link" disabled>
+                  IP
+                </button>
+              </th>
             </tr>
           </thead>
           {paginatedEvents && (
